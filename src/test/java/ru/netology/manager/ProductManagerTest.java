@@ -1,5 +1,6 @@
 package ru.netology.manager;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.domain.Book;
 import ru.netology.domain.Product;
@@ -18,23 +19,21 @@ class ProductManagerTest {
     Product fourth = new Smartphone(4, "Redmi", 15000, "Xiaomi");
     Product fifth = new Smartphone(5, "Iphone", 75000, "Apple");
     Product sixth = new Smartphone(6, "Galaxy", 27000, "Samsung");
+    Product seven = new Smartphone( 7,"GalaxyA",25000,"Samsung");
 
-    @Test
-    public void addAll(){
+    @BeforeEach
+    void setUp(){
         manager.add(first);
         manager.add(second);
         manager.add(third);
         manager.add(fourth);
         manager.add(fifth);
         manager.add(sixth);
-        Product[] actual = repository.findAll();
-        Product[] expected = new Product[]{first,second,third,fourth,fifth,sixth};
-        assertArrayEquals(expected, actual);
+        manager.add(seven);
     }
 
     @Test
     public void searchByNameBook() {
-        addAll();
         Product[] expected = new Product[]{second};
         Product[] actual = manager.searchBy("Dead souls");
         assertArrayEquals(expected, actual);
@@ -42,7 +41,6 @@ class ProductManagerTest {
 
     @Test
     public void searchByAuthor() {
-        addAll();
         Product[] expected = new Product[]{first};
         Product[] actual = manager.searchBy("Pushkin");
         assertArrayEquals(expected, actual);
@@ -50,7 +48,6 @@ class ProductManagerTest {
 
     @Test
     public void searchByManufacture() {
-        addAll();
         Product[] expected = new Product[]{sixth};
         Product[] actual = manager.searchBy("Samsung");
         assertArrayEquals(expected, actual);
@@ -58,7 +55,6 @@ class ProductManagerTest {
 
     @Test
     public void searchByNamePhone() {
-        addAll();
         Product[] expected = new Product[]{fourth};
         Product[] actual = manager.searchBy("Redmi");
         assertArrayEquals(expected, actual);
@@ -66,9 +62,15 @@ class ProductManagerTest {
 
     @Test
     public void searchBy() {
-        addAll();
         Product[] expected = new Product[]{};
         Product[] actual = manager.searchBy(null);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void searchBy2Phone() {
+        Product[] expected = new Product[]{sixth,seven};
+        Product[] actual = manager.searchBy("Samsung");
         assertArrayEquals(expected, actual);
     }
 }
